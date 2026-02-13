@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Micro Tasks</h2>
+
+<a href="{{ url_for('post_task') }}" class="btn btn-success mb-4">
+    + Post a Task
+</a>
+
+<div class="row">
+
+{% for task in tasks %}
+    <div class="col-md-4 mb-4">
+        <div class="card p-3 shadow-sm">
+            <h5>{{ task["title"] }}</h5>
+            <p>{{ task["description"] }}</p>
+            <p><strong>Reward: ₹{{ task["reward"] }}</strong></p>
+            <p class="text-muted">Location: {{ task["location"] }}</p>
+            <p>Status: {{ task["status"] }}</p>
+
+            {% if task["status"] == "open" %}
+                <a href="{{ url_for('accept_task', task_id=task['id']) }}" class="btn btn-primary btn-sm">
+                    Accept Task
+                </a>
+            {% elif task["status"] == "accepted" and task["accepted_by"] == session["user"] %}
+                <a href="{{ url_for('complete_task', task_id=task['id']) }}" class="btn btn-success btn-sm">
+                    Mark Complete
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% else %}
+    <div class="alert alert-info">
+        No tasks posted yet.
+    </div>
+{% endfor %}
+
+</div>
+
+{% endblock %}
