@@ -486,7 +486,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact & Support
 
-**Project Repository:** 
+**Project Repository:** https://github.com/alfiagit27/campus-rental
+
 
 
 **Issues & Bug Reports:** [GitHub Issues](https://github.com/alfiagit27/campus-rental/issues)
