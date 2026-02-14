@@ -1,28 +1,33 @@
 <p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
+  <img src="./img.png" alt="CampusConnect Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# CampusConnect 🎓
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: Hackstreet Girls
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Alfia Fathima
+- Member 2: Neha Babu
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://campus-rental.onrender.com/
 
 ### Project Description
-[2-3 lines about what your project does]
+CampusConnect is a comprehensive campus rental and microtask platform designed to connect students for seamless sharing, renting, and earning opportunities. The platform enables students to list items for rent, post microtasks for quick jobs, and build trust within their campus community through a reputation-based system.
 
-### The Problem statement
-[What problem are you solving?]
+### The Problem Statement
+College students often need items temporarily (textbooks, electronics, sports equipment) but can't afford to buy them. Similarly, students looking for quick earning opportunities struggle to find small tasks or gigs within their campus. Existing platforms are either too formal, charge high fees, or lack the trust factor needed for peer-to-peer transactions in a campus setting.
 
 ### The Solution
-[How are you solving it?]
+CampusConnect provides a trusted, student-centric platform where peers can:
+- **Rent items** from fellow students at affordable rates
+- **Post and accept microtasks** for quick earning opportunities
+- **Build trust scores** through successful transactions
+- **Connect directly** within their campus community
+- All in a professional, aesthetic, and easy-to-use interface designed specifically for students
 
 ---
 
@@ -31,330 +36,316 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- **Languages:** Python 3.x, HTML5, CSS3, JavaScript
+- **Framework:** Flask 3.0.0 (Python web framework)
+- **Database:** SQLite3 (lightweight, file-based database)
+- **Server:** Gunicorn 21.2.0 (WSGI HTTP Server)
+- **UI Framework:** Custom CSS with modern design principles
+- **Tools:** VS Code, Git, GitHub
 
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+**Tech Stack:**
+```
+Backend:  Flask (Python)
+Database: SQLite3
+Frontend: HTML5, CSS3, JavaScript
+Server:   Gunicorn
+Hosting:  Vercel/Render
+```
 
 ---
 
 ## Features
 
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+### Core Features
+
+**1. User Authentication & Trust System**
+- Simple name and email-based registration
+- Session management for secure access
+- Trust score system (starts at 100, increases with completed tasks)
+- User profile with reputation tracking
+
+**2. Campus Rental Marketplace**
+- Browse available items for rent
+- List your own items with details (name, description, category, price per day)
+- Search and filter by category
+- View item availability status
+- Direct connection with item owners
+
+**3. Micro Tasks Platform**
+- Post tasks with title, description, location, and reward amount
+- Browse available tasks sorted by recency
+- Accept tasks to work on
+- Mark tasks as completed
+- Task status tracking (open → accepted → completed)
+- Earn trust points by completing tasks
+
+**4. Trust & Reputation System**
+- Every user starts with 100 trust points
+- Earn +5 points for each completed task
+- Trust scores visible to build community confidence
+- Encourages responsible behavior and quality service
+
+**5. Responsive Dashboard**
+- Clean, modern interface with sky blue and white theme
+- Quick access to rentals and microtasks through 3D widgets
+- Real-time status updates
+- Flash messages for user feedback
+
+---
+
+## Database Schema
+
+### Users Table
+```sql
+users (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    trust_score INTEGER DEFAULT 100
+)
+```
+
+### Tasks Table
+```sql
+tasks (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    location TEXT,
+    reward REAL NOT NULL,
+    posted_by TEXT,
+    accepted_by TEXT,
+    status TEXT DEFAULT 'open',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+```
+
+### Items Table
+```sql
+items (
+    id INTEGER PRIMARY KEY,
+    item_name TEXT NOT NULL,
+    description TEXT,
+    category TEXT,
+    price_per_day REAL NOT NULL,
+    owner_name TEXT,
+    is_available BOOLEAN DEFAULT 1
+)
+```
 
 ---
 
 ## Implementation
 
-### For Software:
+### Installation
 
-#### Installation
+**Prerequisites:**
+- Python 3.7 or higher
+- pip (Python package manager)
+
+**Step 1: Clone the Repository**
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+git clone https://github.com/alfiagit27/campus-rental.git
+cd campus-rental/community-rentals
 ```
 
-#### Run
+**Step 2: Create Virtual Environment (Recommended)**
 ```bash
-[Run commands - e.g., npm start, python app.py]
+# On Windows
+python -m venv venv
+venv\Scripts\activate
+
+# On macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-### For Hardware:
+**Step 3: Install Dependencies**
+```bash
+pip install -r requirements.txt
+```
 
-#### Components Required
-[List all components needed with specifications]
+**Step 4: Initialize Database**
+The database will be automatically created on first run.
 
-#### Circuit Setup
-[Explain how to set up the circuit]
+### Run
+
+**Development Mode:**
+```bash
+python app.py
+```
+
+The application will be available at: `http://localhost:5000`
+
+**Production Mode (with Gunicorn):**
+```bash
+gunicorn app:app --bind 0.0.0.0:5000
+```
+
+### Environment Variables
+
+For production deployment, set:
+```bash
+export PORT=5000
+export FLASK_ENV=production
+```
 
 ---
 
 ## Project Documentation
 
-### For Software:
+### Application Routes
 
-#### Screenshots (Add at least 3)
+**Authentication:**
+- `GET/POST /` - Login page (auto-registers new users)
+- `GET /logout` - Clear session and logout
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+**Dashboard:**
+- `GET /dashboard` - Main dashboard with trust score and widgets
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+**Rental Items:**
+- `GET /items` - Browse all available rental items
+- `GET/POST /list_item` - List a new item for rent
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+**Micro Tasks:**
+- `GET /tasks` - Browse all posted tasks
+- `GET/POST /post_task` - Post a new task
+- `GET /accept_task/<id>` - Accept a task
+- `GET /complete_task/<id>` - Mark task as completed (earns trust points)
 
-#### Diagrams
+### Screenshots
 
-**System Architecture:**
+#### 1. Login Page
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
 
-**Application Workflow:**
+<img width="1918" height="1013" alt="Screenshot 2026-02-14 070020" src="https://github.com/user-attachments/assets/111a526b-75c5-4cce-9350-310e06eb4d30" />
 
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
 
----
+#### 2. Dashboard
 
-### For Hardware:
 
-#### Schematic & Circuit
+<img width="1898" height="940" alt="Screenshot 2026-02-14 070133" src="https://github.com/user-attachments/assets/d8453c11-4e06-4cb7-89c6-14fd8836cf58" />
 
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+#### 3. Browse Rental Items
 
-#### Build Photos
 
-![Team](Add photo of your team here)
+<img width="1915" height="922" alt="Screenshot 2026-02-14 070242" src="https://github.com/user-attachments/assets/6b945302-82e3-4853-8503-9375558a5bcf" />
 
-![Components](Add photo of your components here)
-*List out all components shown*
+<img width="1919" height="974" alt="Screenshot 2026-02-14 070312" src="https://github.com/user-attachments/assets/eb16642e-0d95-451c-b137-6a057e58500f" />
 
-![Build](Add photos of build process here)
-*Explain the build steps*
 
-![Final](Add photo of final product here)
-*Explain the final build*
+<img width="667" height="540" alt="Screenshot 2026-02-14 070601" src="https://github.com/user-attachments/assets/afc6c86a-18a8-4e85-841b-190a90d30df9" />
 
----
 
-## Additional Documentation
 
-### For Web Projects with Backend:
+#### 4. Micro Tasks
+<img width="1919" height="936" alt="Screenshot 2026-02-14 070719" src="https://github.com/user-attachments/assets/d26f7bc7-96eb-462d-94c2-f50b3bb3101b" />
 
-#### API Documentation
 
-**Base URL:** `https://api.yourproject.com`
 
-##### Endpoints
 
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
-}
+
+#### 5. Post Task Form
+<img width="1865" height="968" alt="Screenshot 2026-02-14 070704" src="https://github.com/user-attachments/assets/ec4a2e18-a053-4b71-a06a-810a7e4bad41" />
+
+
+
+
+### Application Workflow
+
 ```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
-{
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
-}
-```
-
-[Add more endpoints as needed...]
-
----
-
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
+┌─────────────┐
+│ Login/Sign  │
+│     Up      │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Dashboard  │◄───────────┐
+│   (Trust    │            │
+│   Score)    │            │
+└──────┬──────┘            │
+       │                   │
+       ├────────┬──────────┤
+       ▼        ▼          │
+   ┌───────┐ ┌────────┐   │
+   │ Rent  │ │ Micro  │   │
+   │ Items │ │ Tasks  │   │
+   └───┬───┘ └───┬────┘   │
+       │         │         │
+       ▼         ▼         │
+  ┌────────┐ ┌─────────┐  │
+  │ Browse │ │ Browse  │  │
+  │ Items  │ │ Tasks   │  │
+  └───┬────┘ └────┬────┘  │
+      │           │        │
+      ▼           ▼        │
+  ┌────────┐ ┌─────────┐  │
+  │  List  │ │  Post   │  │
+  │  Item  │ │  Task   │  │
+  └────────┘ └────┬────┘  │
+                  │        │
+                  ▼        │
+              ┌────────┐   │
+              │ Accept │   │
+              │  Task  │   │
+              └────┬───┘   │
+                   │       │
+                   ▼       │
+              ┌─────────┐  │
+              │Complete │  │
+              │  Task   │──┘
+              │(+5 Trust)│
+              └─────────┘
 ```
 
 ---
 
-### For Hardware Projects:
+## UI/UX Design Features
 
-#### Bill of Materials (BOM)
+### Color Scheme
+- **Primary:** Sky Blue (#87CEEB) - Professional and calming
+- **Secondary:** White (#FFFFFF) - Clean and modern
+- **Accent:** Yellow (#FFD700) - Highlights and CTAs with 3D effects
+- **Text:** Dark Gray (#343A40) - High readability
 
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
+### Design Principles
+1. **Aesthetic & Professional** - Clean, modern interface suitable for college students
+2. **3D Effects** - Widgets and buttons have smooth 3D hover transformations
+3. **User-Friendly** - Intuitive navigation with clear visual hierarchy
+4. **Responsive** - Works seamlessly on desktop, tablet, and mobile
+5. **Consistent** - Unified theme across all pages
 
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
+### Key UI Elements
+- **Login Page:** Centered card with sky blue gradient background
+- **Dashboard Widgets:** Yellow cards with 3D hover effects (lift, rotate, scale, glow)
+- **Forms:** Professional input fields with smooth focus animations
+- **Cards:** Clean white cards with sky blue accents and hover effects
+- **Buttons:** Rounded with gradient backgrounds and transform effects
 
 ---
 
-### For Scripts/CLI Tools:
+## Deployment
 
-#### Command Reference
 
-**Basic Usage:**
-```bash
-python script.py [options] [arguments]
+
+### Render Deployment
+
+**1. Create `render.yaml` file:**
+```yaml
+services:
+  - type: web
+    name: campus-rental
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
 ```
 
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
-
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
-
-**Examples:**
-
-```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
-```
-
-#### Demo Output
-
-**Example 1: Basic Processing**
-
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
-
-**Command:**
-```bash
-python script.py sample.txt
-```
-
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
-
-**Example 2: Advanced Usage**
-
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
-
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
-
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
-}
-[VERBOSE] Operation completed in 0.23s
-```
+**2. Push to GitHub and connect to Render**
 
 ---
 
@@ -363,58 +354,162 @@ python script.py -v --format json data.json
 ### Video
 [Add your demo video link here - YouTube, Google Drive, etc.]
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+**Demo Highlights:**
+- User registration and login flow
+- Dashboard navigation with 3D widget interactions
+- Browsing and listing rental items
+- Posting and accepting microtasks
+- Trust score system demonstration
 
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
+### Live Demo
+**URL:** 
+
+**Test Credentials:**
+- Name: Demo User
+- Email: demo@college.edu
 
 ---
 
-## AI Tools Used (Optional - For Transparency Bonus)
+## Future Enhancements
 
-If you used AI tools during development, document them here for transparency:
+### Planned Features
+1. **Image Upload** - Allow users to upload images for rental items
+2. **Search & Filters** - Advanced search with category and price filters
+3. **Chat System** - Direct messaging between users
+4. **Payment Integration** - Secure payment gateway (Razorpay/Stripe)
+5. **Reviews & Ratings** - User reviews for completed transactions
+6. **Email Notifications** - Alerts for task assignments and completions
+7. **Mobile App** - Native iOS and Android applications
+8. **Admin Panel** - Moderation tools for campus administrators
+9. **Location-based Search** - Find items and tasks near you
+10. **Analytics Dashboard** - User statistics and platform metrics
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
+---
 
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
+## Security Features
 
-**Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
+- **Session Management** - Secure Flask sessions with secret key
+- **SQL Injection Prevention** - Parameterized queries with SQLite
+- **Input Validation** - Form data validation on backend
+- **HTTPS Ready** - Secure deployment configurations
+- **Trust System** - Reputation-based access control
 
-**Percentage of AI-generated code:** [Approximately X%]
+---
 
-**Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
+## Known Issues & Limitations
 
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
+1. **No Password Authentication** - Currently uses name/email only (planned for v2.0)
+2. **No Image Upload** - Items listings are text-only (planned enhancement)
+3. **Basic Search** - No advanced filtering yet
+4. **No Real-time Updates** - Page refresh needed for new data
+5. **Single Campus** - No multi-campus support yet
+
+---
+
+## Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/AmazingFeature`)
+3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
+4. **Push to the branch** (`git push origin feature/AmazingFeature`)
+5. **Open a Pull Request**
+
+### Contribution Guidelines
+- Follow PEP 8 style guide for Python code
+- Write descriptive commit messages
+- Test thoroughly before submitting PR
+- Update documentation for new features
+
+---
+
+## Testing
+
+### Manual Testing Checklist
+
+**Authentication:**
+- [ ] User can register with name and email
+- [ ] Existing users can login
+- [ ] Session persists across pages
+- [ ] Logout clears session properly
+
+**Rental Items:**
+- [ ] View all items successfully
+- [ ] List new item with all fields
+- [ ] Item appears in browse page immediately
+- [ ] Form validation works correctly
+
+**Micro Tasks:**
+- [ ] Browse all posted tasks
+- [ ] Post new task successfully
+- [ ] Accept task updates status
+- [ ] Complete task increases trust score
+- [ ] Status changes reflect correctly
+
+**Trust System:**
+- [ ] New users start with 100 points
+- [ ] Completing task adds +5 points
+- [ ] Trust score displays on dashboard
 
 ---
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- **[Member 1]:** Backend development, database design, Flask routes, authentication system
+- **[Member 2]:** Frontend development, UI/UX design, premium theme implementation, documentation
+
+---
+
+## Acknowledgments
+
+- **Flask Documentation** - Comprehensive web framework guide
+- **SQLite** - Lightweight database solution
+- **Bootstrap Icons** - Icon library
+- **Font Awesome** - Additional icons
+- **TinkerHub** - Platform and support for the hackathon
 
 ---
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
+**MIT License Overview:**
+- ✅ Commercial use allowed
+- ✅ Modification allowed
+- ✅ Distribution allowed
+- ✅ Private use allowed
+- ❗ Liability and warranty not included
 
 ---
 
-Made with ❤️ at TinkerHub
+## Contact & Support
+
+**Project Repository:** 
+
+
+**Issues & Bug Reports:** [GitHub Issues](https://github.com/alfiagit27/campus-rental/issues)
+
+**For queries:** alfiasset@gmail.com
+
+---
+
+## Project Statistics
+
+- **Total Routes:** 10
+- **Database Tables:** 3
+- **Templates:** 9
+- **Lines of Code:** ~250 (Python)
+- **Development Time:** [Your duration]
+- **Contributors:** 2
+
+---
+
+<p align="center">
+  Made with ❤️ at TinkerHub
+</p>
+
+<p align="center">
+  <strong>CampusConnect - Connecting Students, Building Community</strong>
+</p>
